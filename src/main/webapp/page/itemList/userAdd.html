@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>文章列表--layui后台管理模板 2.0</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../../css/public.css" media="all" />
+	</head>
+
+	<body class="childrenBody">
+		<form class="layui-form" style="width:80%;">
+			<div class="layui-form-item layui-row layui-col-xs12">
+				<label class="layui-form-label">商品名称</label>
+				<div class="layui-input-block">
+					<input type="text" class="layui-input itemName" lay-verify="required" placeholder="请输入商品名称">
+				</div>
+			</div>
+			<div class="magb15 layui-col-md4 layui-col-xs12">
+				<label class="layui-form-label">商品类型</label>
+				<div class="layui-input-block">
+					<select name="itemKind" class="itemKind" lay-filter="itemKind" lay-verify="required">
+						<option value="手机类">手机类</option>
+						<option value="平板类">平板类</option>
+						<option value="笔记本">笔记本</option>
+						<option value="智能设备">智能设备</option>
+						<option value="配件类">配件类</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item layui-row layui-col-xs12">
+				<label class="layui-form-label">商品介绍</label>
+				<div class="layui-input-block">
+					<input type="text" class="layui-input introduce" lay-verify="required" placeholder="请输入商品介绍">
+				</div>
+			</div>
+			<div class="layui-form-item layui-row layui-col-xs12">
+				<label class="layui-form-label">商品价格</label>
+				<div class="layui-input-block">
+					<input type="text" class="layui-input price" lay-verify="required" placeholder="请填写商品价格">
+				</div>
+			</div>
+			<div class="magb15 layui-col-md4 layui-col-xs12">
+				<label class="layui-form-label">商品折扣</label>
+				<div class="layui-input-block">
+					<select name="discount" class="discount" lay-verify="required">
+						<option value="7折">7折</option>
+						<option value="8折">8折</option>
+						<option value="9折">9折</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item layui-row layui-col-xs12">
+				<label class="layui-form-label">商品库存</label>
+				<div class="layui-input-block">
+					<input type="text" class="layui-input remain" lay-verify="required" placeholder="请填写库存量">
+				</div>
+			</div>
+			<div class="layui-form-item layui-row layui-col-xs12">
+				<label class="layui-form-label">发布时间</label>
+				<div class="layui-inline">
+					<input type="text" class="layui-input releaseTime" lay-verify="required" placeholder="请选择发布时间" id="test1">
+				</div>
+			</div>
+
+			<div class="layui-form-item layui-row layui-col-xs12">
+				<div class="layui-input-block">
+					<button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="addUser">立即提交</button>
+					<button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
+				</div>
+			</div>
+		</form>
+
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="userAdd.js"></script>
+		<script src="../../layui/lay/modules/laydate.js"></script>
+		<script>
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+
+				//执行一个laydate实例
+				laydate.render({
+					elem: '#test1' //指定元素
+				});
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,44 @@
+{
+	"code": 0,
+	"msg": "",
+	"count": 3,
+	"data": [
+		{
+			"usersId": "1",
+			"orderNum": "19338902",
+			"orderStatus": "待发货",
+			"orderTime": "2018-9-12 9:00",
+			"orderPrice": "3900元",
+			"itemName": "小米MIX",
+			"itemNum": "1",
+			"remain": "1000",
+			"releaseTime": "2019-04-07",
+			"buyer":"喵喵喵",
+			"address":"河北省,秦皇岛市,北戴河区"
+		},{
+			"usersId": "2",
+			"orderNum": "19338902",
+			"orderStatus": "待收货",
+			"orderTime": "2018-9-12 9:00",
+			"orderPrice": "3900元",
+			"itemName": "小米MIX",
+			"itemNum": "1",
+			"remain": "1000",
+			"releaseTime": "2019-04-07",
+			"buyer":"喵喵喵",
+			"address":"河北省,秦皇岛市,北戴河区"
+		},{
+			"usersId": "3",
+			"orderNum": "19338902",
+			"orderStatus": "已收货",
+			"orderTime": "2018-9-12 9:00",
+			"orderPrice": "3900元",
+			"itemName": "小米MIX",
+			"itemNum": "1",
+			"remain": "1000",
+			"releaseTime": "2019-04-07",
+			"buyer":"喵喵喵",
+			"address":"河北省,秦皇岛市,北戴河区"
+		}
+	]
+}

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.GoodsDetailMapper">
+  <resultMap id="BaseResultMap" type="com.example.bean.GoodsDetail">
+    <id column="goods_detail_id" jdbcType="BIGINT" property="goodsDetailId" />
+    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <result column="goods_detail_name" jdbcType="VARCHAR" property="goodsDetailName" />
+    <result column="goods_detail_price" jdbcType="REAL" property="goodsDetailPrice" />
+    <result column="goods_detail_quantity" jdbcType="INTEGER" property="goodsDetailQuantity" />
+    <result column="goods_detail_discount" jdbcType="REAL" property="goodsDetailDiscount" />
+    <result column="goods_detail_status" jdbcType="INTEGER" property="goodsDetailStatus" />
+  </resultMap>
+  <resultMap id="AllResultMap" type="com.example.bean.GoodsDetail">
+    <id column="goods_detail_id" jdbcType="BIGINT" property="goodsDetailId" />
+    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <result column="goods_detail_name" jdbcType="VARCHAR" property="goodsDetailName" />
+    <result column="goods_detail_price" jdbcType="REAL" property="goodsDetailPrice" />
+    <result column="goods_detail_quantity" jdbcType="INTEGER" property="goodsDetailQuantity" />
+    <result column="goods_detail_discount" jdbcType="REAL" property="goodsDetailDiscount" />
+    <result column="goods_detail_status" jdbcType="INTEGER" property="goodsDetailStatus" />
+    <association property="kind" javaType="com.example.bean.Kind">
+    	<id column="kind_id" property="kindId" />
+    	<result column="kind_name" property="kindName" />
+    </association>
+    <association property="goods" javaType="com.example.bean.Goods">
+    	<id column="goods_id" property="goodsId" />
+	    <result column="kind_id" property="kindId" />
+	    <result column="goods_name" property="goodsName" />
+	    <result column="goods_introduction" property="goodsIntroduction" />
+	    <result column="goods_sale_quantity" property="goodsSaleQuantity" />
+	    <result column="goods_date" property="goodsDate" />
+    </association>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    goods_detail_id, goods_id, goods_detail_name, goods_detail_price, goods_detail_quantity, 
+    goods_detail_discount,goods_detail_status
+  </sql>
+  <select id="selectWithAll" parameterType="java.lang.String" resultMap="AllResultMap">
+    SELECT a.*,b.*,c.*
+	FROM goods_detail a
+	LEFT JOIN goods b ON a.goods_id = b.goods_id
+	LEFT JOIN kind c ON b.kind_id = c.kind_id
+	<if test="likeValue != null">
+		WHERE concat(b.goods_name,b.goods_introduction,b.goods_sale_quantity,date_format(b.goods_data,'%Y-%m-%d'),c.kind_name,a.goods_detail_discount,a.goods_detail_price,a.goods_detail_quantity) like '${likeValue}'
+    </if>
+  </select>
+  <select id="selectWithNoPicture" resultMap="BaseResultMap">
+   	SELECT a.*
+	FROM goods_detail a
+	WHERE NOT EXISTS (select * FROM goods_detail_picture WHERE a.goods_detail_id = goods_detail_id)
+  </select>
+  <select id="selectByExample" parameterType="com.example.bean.GoodsDetailExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from goods_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from goods_detail
+    where goods_detail_id = #{goodsDetailId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update goods_detail
+    set goods_detail_status = 2
+    where goods_detail_id = #{goodsDetailId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.example.bean.GoodsDetailExample">
+    delete from goods_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.example.bean.GoodsDetail">
+    insert into goods_detail (goods_detail_id, goods_id, goods_detail_name, 
+      goods_detail_price, goods_detail_quantity, goods_detail_discount
+      )
+    values (#{goodsDetailId,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{goodsDetailName,jdbcType=VARCHAR}, 
+      #{goodsDetailPrice,jdbcType=REAL}, #{goodsDetailQuantity,jdbcType=INTEGER}, #{goodsDetailDiscount,jdbcType=REAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.bean.GoodsDetail">
+    insert into goods_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="goodsDetailId != null">
+        goods_detail_id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="goodsDetailName != null">
+        goods_detail_name,
+      </if>
+      <if test="goodsDetailPrice != null">
+        goods_detail_price,
+      </if>
+      <if test="goodsDetailQuantity != null">
+        goods_detail_quantity,
+      </if>
+      <if test="goodsDetailDiscount != null">
+        goods_detail_discount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="goodsDetailId != null">
+        #{goodsDetailId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsDetailName != null">
+        #{goodsDetailName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsDetailPrice != null">
+        #{goodsDetailPrice,jdbcType=REAL},
+      </if>
+      <if test="goodsDetailQuantity != null">
+        #{goodsDetailQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="goodsDetailDiscount != null">
+        #{goodsDetailDiscount,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.example.bean.GoodsDetailExample" resultType="java.lang.Long">
+    select count(*) from goods_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update goods_detail
+    <set>
+      <if test="record.goodsDetailId != null">
+        goods_detail_id = #{record.goodsDetailId,jdbcType=BIGINT},
+      </if>
+      <if test="record.goodsId != null">
+        goods_id = #{record.goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.goodsDetailName != null">
+        goods_detail_name = #{record.goodsDetailName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsDetailPrice != null">
+        goods_detail_price = #{record.goodsDetailPrice,jdbcType=REAL},
+      </if>
+      <if test="record.goodsDetailQuantity != null">
+        goods_detail_quantity = #{record.goodsDetailQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsDetailDiscount != null">
+        goods_detail_discount = #{record.goodsDetailDiscount,jdbcType=REAL},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update goods_detail
+    set goods_detail_id = #{record.goodsDetailId,jdbcType=BIGINT},
+      goods_id = #{record.goodsId,jdbcType=BIGINT},
+      goods_detail_name = #{record.goodsDetailName,jdbcType=VARCHAR},
+      goods_detail_price = #{record.goodsDetailPrice,jdbcType=REAL},
+      goods_detail_quantity = #{record.goodsDetailQuantity,jdbcType=INTEGER},
+      goods_detail_discount = #{record.goodsDetailDiscount,jdbcType=REAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.bean.GoodsDetail">
+    update goods_detail
+    <set>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsDetailName != null">
+        goods_detail_name = #{goodsDetailName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsDetailPrice != null">
+        goods_detail_price = #{goodsDetailPrice,jdbcType=REAL},
+      </if>
+      <if test="goodsDetailQuantity != null">
+        goods_detail_quantity = #{goodsDetailQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="goodsDetailDiscount != null">
+        goods_detail_discount = #{goodsDetailDiscount,jdbcType=REAL},
+      </if>
+    </set>
+    where goods_detail_id = #{goodsDetailId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.bean.GoodsDetail">
+    update goods_detail
+    set goods_id = #{goodsId,jdbcType=BIGINT},
+      goods_detail_name = #{goodsDetailName,jdbcType=VARCHAR},
+      goods_detail_price = #{goodsDetailPrice,jdbcType=REAL},
+      goods_detail_quantity = #{goodsDetailQuantity,jdbcType=INTEGER},
+      goods_detail_discount = #{goodsDetailDiscount,jdbcType=REAL}
+    where goods_detail_id = #{goodsDetailId,jdbcType=BIGINT}
+  </update>
+</mapper>

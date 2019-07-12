@@ -1,0 +1,17 @@
+{
+	"code": 0,
+	"msg": "",
+	"count":3,
+	"data": [
+		{
+			"kindId": "1",
+			"kindName": "手机类"
+		},{
+			"kindId": "2",
+			"kindName": "平板类"
+		},{
+			"kindId": "3",
+			"kindName": "智能设备类"
+		}
+	]
+}

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.GoodsMapper">
+  <resultMap id="BaseResultMap" type="com.example.bean.Goods">
+    <id column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <result column="kind_id" jdbcType="BIGINT" property="kindId" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_introduction" jdbcType="VARCHAR" property="goodsIntroduction" />
+    <result column="goods_sale_quantity" jdbcType="INTEGER" property="goodsSaleQuantity" />
+    <result column="goods_date" jdbcType="DATE" property="goodsDate" />
+  </resultMap>
+  <resultMap id="AllResultMap" type="com.example.bean.Goods">
+    <id column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <result column="kind_id" jdbcType="BIGINT" property="kindId" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_introduction" jdbcType="VARCHAR" property="goodsIntroduction" />
+    <result column="goods_sale_quantity" jdbcType="INTEGER" property="goodsSaleQuantity" />
+    <result column="goods_date" jdbcType="DATE" property="goodsDate" />
+    <association property="goodsDetail" javaType="com.example.bean.GoodsDetail">
+    	<id column="goods_detail_id" property="goodsDetailId" />
+	    <result column="goods_id" property="goodsId" />
+	    <result column="goods_detail_name" property="goodsDetailName" />
+	    <result column="goods_detail_price" property="goodsDetailPrice" />
+	    <result column="goods_detail_quantity" property="goodsDetailQuantity" />
+	    <result column="goods_detail_discount" property="goodsDetailDiscount" />
+    </association>
+    <association property="kind" javaType="com.example.bean.Kind">
+    	<id column="kind_id" property="kindId" />
+    	<result column="kind_name" property="kindName" />
+    </association>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    goods_id, kind_id, goods_name, goods_introduction, goods_sale_quantity, goods_date
+  </sql>
+  <select id="selectWithAll" parameterType="java.lang.String" resultMap="AllResultMap">
+    SELECT a.*,b.*,c.*
+	FROM goods a
+	LEFT JOIN kind b ON a.kind_id = b.kind_id
+	LEFT JOIN goods_detail c ON c.goods_id = a.goods_id
+	<if test="likeValue != null">
+		WHERE concat(a.goods_name,a.goods_introduction,a.goods_sale_quantity,date_format(a.goods_date,'%Y-%m-%d'),b.kind_name,c.goods_detail_discount,c.goods_detail_price,c.goods_detail_quantity) like '${likeValue}'
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.example.bean.GoodsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from goods
+    where goods_id = #{goodsId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from goods
+    where goods_id = #{goodsId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.example.bean.GoodsExample">
+    delete from goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.example.bean.Goods">
+  	<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="goodsId">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into goods (goods_id, kind_id, goods_name, 
+      goods_introduction, goods_sale_quantity, goods_date
+      )
+    values (#{goodsId,jdbcType=BIGINT}, #{kindId,jdbcType=BIGINT}, #{goodsName,jdbcType=VARCHAR}, 
+      #{goodsIntroduction,jdbcType=VARCHAR}, #{goodsSaleQuantity,jdbcType=INTEGER}, #{goodsDate,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.bean.Goods">
+    insert into goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="kindId != null">
+        kind_id,
+      </if>
+      <if test="goodsName != null">
+        goods_name,
+      </if>
+      <if test="goodsIntroduction != null">
+        goods_introduction,
+      </if>
+      <if test="goodsSaleQuantity != null">
+        goods_sale_quantity,
+      </if>
+      <if test="goodsData != null">
+        goods_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="kindId != null">
+        #{kindId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsIntroduction != null">
+        #{goodsIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsSaleQuantity != null">
+        #{goodsSaleQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="goodsData != null">
+        #{goodsDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.example.bean.GoodsExample" resultType="java.lang.Long">
+    select count(*) from goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update goods
+    <set>
+      <if test="record.goodsId != null">
+        goods_id = #{record.goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.kindId != null">
+        kind_id = #{record.kindId,jdbcType=BIGINT},
+      </if>
+      <if test="record.goodsName != null">
+        goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsIntroduction != null">
+        goods_introduction = #{record.goodsIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsSaleQuantity != null">
+        goods_sale_quantity = #{record.goodsSaleQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsData != null">
+        goods_date = #{record.goodsDate,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update goods
+    set goods_id = #{record.goodsId,jdbcType=BIGINT},
+      kind_id = #{record.kindId,jdbcType=BIGINT},
+      goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      goods_introduction = #{record.goodsIntroduction,jdbcType=VARCHAR},
+      goods_sale_quantity = #{record.goodsSaleQuantity,jdbcType=INTEGER},
+      goods_date = #{record.goodsDate,jdbcType=DATE}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.bean.Goods">
+    update goods
+    <set>
+      <if test="kindId != null">
+        kind_id = #{kindId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsName != null">
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsIntroduction != null">
+        goods_introduction = #{goodsIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsSaleQuantity != null">
+        goods_sale_quantity = #{goodsSaleQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="goodsData != null">
+        goods_date = #{goodsDate,jdbcType=DATE},
+      </if>
+    </set>
+    where goods_id = #{goodsId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.bean.Goods">
+    update goods
+    set kind_id = #{kindId,jdbcType=BIGINT},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_introduction = #{goodsIntroduction,jdbcType=VARCHAR},
+      goods_sale_quantity = #{goodsSaleQuantity,jdbcType=INTEGER},
+      goods_date = #{goodsDate,jdbcType=DATE}
+    where goods_id = #{goodsId,jdbcType=BIGINT}
+  </update>
+</mapper>
