@@ -13,6 +13,8 @@ public class GoodsDetail {
 
     private Float goodsDetailDiscount;
     
+    private String goodsDetailIntroduction;
+    
     private Integer goodsDetailStatus;
     
     private Kind kind;
@@ -25,7 +27,7 @@ public class GoodsDetail {
 	}
 
 	public GoodsDetail(Long goodsDetailId, Long goodsId, String goodsDetailName, Float goodsDetailPrice,
-			Integer goodsDetailQuantity, Float goodsDetailDiscount) {
+			Integer goodsDetailQuantity, Float goodsDetailDiscount, String goodsDetailIntroduction) {
 		super();
 		this.goodsDetailId = goodsDetailId;
 		this.goodsId = goodsId;
@@ -33,6 +35,8 @@ public class GoodsDetail {
 		this.goodsDetailPrice = goodsDetailPrice;
 		this.goodsDetailQuantity = goodsDetailQuantity;
 		this.goodsDetailDiscount = goodsDetailDiscount;
+		this.goodsDetailIntroduction = goodsDetailIntroduction;
+	
 	}
 
 	public Kind getKind() {
@@ -101,6 +105,14 @@ public class GoodsDetail {
 
 	public Integer getGoodsDetailStatus() {
 		return goodsDetailStatus;
+	}
+
+	public String getGoodsDetailIntroduction() {
+		return goodsDetailIntroduction;
+	}
+
+	public void setGoodsDetailIntroduction(String goodsDetailIntroduction) {
+		this.goodsDetailIntroduction = goodsDetailIntroduction;
 	}
 
 	public void setGoodsDetailStatus(Integer goodsDetailStatus) {

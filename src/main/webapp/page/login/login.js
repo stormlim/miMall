@@ -11,6 +11,10 @@ layui.use(['form','layer','jquery'],function(){
 
     //登录按钮
     form.on("submit(login)",function(data){
+    	if($("#code").val().toUpperCase()!=code){
+    		layer.msg("验证码错误");
+    		return false;
+    	}
         $(this).text("登录中...").attr("disabled","disabled").addClass("layui-disabled");
         $.ajax({
         	url:"/miMall/login",

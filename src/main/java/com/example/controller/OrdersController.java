@@ -23,6 +23,11 @@ import com.example.service.KindService;
 import com.example.service.OrderService;
 import com.example.util.dataJson;
 
+/**
+ * 
+ * @author ¿Ó√À
+ * @create 2019-07-11 10:08:20
+ */
 @Controller
 public class OrdersController {
 	@Autowired

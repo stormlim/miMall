@@ -8,6 +8,7 @@
     <result column="goods_detail_price" jdbcType="REAL" property="goodsDetailPrice" />
     <result column="goods_detail_quantity" jdbcType="INTEGER" property="goodsDetailQuantity" />
     <result column="goods_detail_discount" jdbcType="REAL" property="goodsDetailDiscount" />
+    <result column="goods_detail_introduction" jdbcType="VARCHAR" property="goodsDetailIntroduction" />
     <result column="goods_detail_status" jdbcType="INTEGER" property="goodsDetailStatus" />
   </resultMap>
   <resultMap id="AllResultMap" type="com.example.bean.GoodsDetail">
@@ -17,6 +18,7 @@
     <result column="goods_detail_price" jdbcType="REAL" property="goodsDetailPrice" />
     <result column="goods_detail_quantity" jdbcType="INTEGER" property="goodsDetailQuantity" />
     <result column="goods_detail_discount" jdbcType="REAL" property="goodsDetailDiscount" />
+    <result column="goods_detail_introduction" jdbcType="VARCHAR" property="goodsDetailIntroduction" />
     <result column="goods_detail_status" jdbcType="INTEGER" property="goodsDetailStatus" />
     <association property="kind" javaType="com.example.bean.Kind">
     	<id column="kind_id" property="kindId" />
@@ -140,10 +142,11 @@
   </delete>
   <insert id="insert" parameterType="com.example.bean.GoodsDetail">
     insert into goods_detail (goods_detail_id, goods_id, goods_detail_name, 
-      goods_detail_price, goods_detail_quantity, goods_detail_discount
+      goods_detail_price, goods_detail_quantity, goods_detail_discount, goods_detail_introduction
       )
     values (#{goodsDetailId,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{goodsDetailName,jdbcType=VARCHAR}, 
-      #{goodsDetailPrice,jdbcType=REAL}, #{goodsDetailQuantity,jdbcType=INTEGER}, #{goodsDetailDiscount,jdbcType=REAL}
+      #{goodsDetailPrice,jdbcType=REAL}, #{goodsDetailQuantity,jdbcType=INTEGER}, #{goodsDetailDiscount,jdbcType=REAL},
+      #{goodsDetailIntroduction,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.example.bean.GoodsDetail">
@@ -228,7 +231,8 @@
       goods_detail_name = #{record.goodsDetailName,jdbcType=VARCHAR},
       goods_detail_price = #{record.goodsDetailPrice,jdbcType=REAL},
       goods_detail_quantity = #{record.goodsDetailQuantity,jdbcType=INTEGER},
-      goods_detail_discount = #{record.goodsDetailDiscount,jdbcType=REAL}
+      goods_detail_discount = #{record.goodsDetailDiscount,jdbcType=REAL},
+      goods_detail_introduction = #{record.goodsDetailIntroduction, jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>

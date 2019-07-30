@@ -1,6 +1,8 @@
 package com.example.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,10 @@ public class GoodsPictureService {
 	
 	public void insertGoodsPicture(GoodsDetailPicture goodsDetailPicture) {
 		goodsDetailPictureMapper.insert(goodsDetailPicture);
+		Map paramMap = new HashMap();
+		paramMap.put("picUrl", goodsDetailPicture.getGoodsDetailPictureUrl());
+		paramMap.put("goodsDetailId", goodsDetailPicture.getGoodsDetailId());
+		goodsDetailPictureMapper.updateGoods(paramMap);
 	}
 	
 	public GoodsDetailPicture selectGoodsPicture(long goodsDetailPictureId){

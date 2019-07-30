@@ -2,6 +2,7 @@ package com.example.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,6 +22,11 @@ import com.example.bean.GoodsDetailPictureExample.Criteria;
 import com.example.service.GoodsPictureService;
 import com.example.util.dataJson;
 
+/**
+ * 
+ * @author ¿Ó√À
+ * @create 2019-07-10 09:12:12
+ */
 @Controller
 public class GoodsPictureController {
 	
@@ -66,7 +72,7 @@ public class GoodsPictureController {
 			try {
 				//file.transferTo(new File(basePath+"images/goodsPicture/"+filename));
 				file.transferTo(new File("/tomcat/fcserver/webapps/miMall/images/goodsPicture/"+filename));
-				file.transferTo(new File("/tomcat/fcserver/webapps/backssm/mimall/images/goodsPicture/"+filename));
+				Files.copy(new File("/tomcat/fcserver/webapps/miMall/images/goodsPicture/"+filename).toPath(),new File("/tomcat/fcserver/webapps/backssm/mimall/images/goodsPicture/"+filename).toPath());
 				goodsPictureService.insertGoodsPicture(new GoodsDetailPicture(null,Long.valueOf(goodsDetailId),"mimall/images/goodsPicture/"+filename));
 			} catch (IllegalStateException | IOException e) {
 				e.printStackTrace();
@@ -94,7 +100,7 @@ public class GoodsPictureController {
 				String filename = gp.getGoodsDetailId()+str.substring(str.lastIndexOf("."), str.length());
 				//file.transferTo(new File(basePath+"images/goodsPicture/"+pictureName));
 				file.transferTo(new File("/tomcat/fcserver/webapps/miMall/images/goodsPicture/"+filename));
-				file.transferTo(new File("/tomcat/fcserver/webapps/backssm/mimall/images/goodsPicture/"+filename));
+				Files.copy(new File("/tomcat/fcserver/webapps/miMall/images/goodsPicture/"+filename).toPath(),new File("/tomcat/fcserver/webapps/backssm/mimall/images/goodsPicture/"+filename).toPath());
 				GoodsDetailPictureExample goodsDetailPictureExample = new GoodsDetailPictureExample();
 				Criteria criteria = goodsDetailPictureExample.createCriteria();
 				criteria.andGoodsDetailPictureIdEqualTo(Long.parseLong(picId));

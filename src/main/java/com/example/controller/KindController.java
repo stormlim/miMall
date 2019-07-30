@@ -18,6 +18,11 @@ import com.example.bean.KindExample.Criteria;
 import com.example.service.KindService;
 import com.example.util.dataJson;
 
+/**
+ * 
+ * @author ¿Ó√À
+ * @create 2019-07-11 20:34:45
+ */
 @Controller
 public class KindController {
 	@Autowired

@@ -27,6 +27,11 @@ import com.example.service.GoodsService;
 import com.example.service.KindService;
 import com.example.util.dataJson;
 
+/**
+ * 
+ * @author ¿Ó√À
+ * @create 2019-07-09 14:14:38
+ */
 @Controller
 public class GoodsController {
 	@Autowired
@@ -117,7 +122,7 @@ public class GoodsController {
 			disCount=2;
 		if(list.size()==0) {
 			long goodsId = goodsService.insertGoods(new Goods(null,list2.get(0).getKindId(),itemName,introduce,0,date2));
-			goodsDetailService.insertGoodsDetail(new GoodsDetail(null, goodsId, itemName, Float.parseFloat(price), Integer.valueOf(remain), disCount));
+			goodsDetailService.insertGoodsDetail(new GoodsDetail(null, goodsId, itemName, Float.parseFloat(price), Integer.valueOf(remain), disCount, introduce));
 		}else {
 			long goodsId = list.get(0).getGoodsId();
 			GoodsExample goodsExample = new GoodsExample();
@@ -125,7 +130,7 @@ public class GoodsController {
 			criteria3.andGoodsIdEqualTo(goodsId);
 			System.out.println(date2);
 			goodsService.uploadGoods(new Goods(goodsId,list2.get(0).getKindId(),itemName,introduce,Integer.valueOf(remain),date2), goodsExample);
-			goodsDetailService.uploadGoodsDetail(new GoodsDetail(list.get(0).getGoodsDetailId(), goodsId, itemName, Float.parseFloat(price), Integer.valueOf(remain), disCount),goodsDetailExample);
+			goodsDetailService.uploadGoodsDetail(new GoodsDetail(list.get(0).getGoodsDetailId(), goodsId, itemName, Float.parseFloat(price), Integer.valueOf(remain), disCount, introduce),goodsDetailExample);
 		}
 		return 200;
 	}

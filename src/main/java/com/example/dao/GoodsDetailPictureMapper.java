@@ -3,6 +3,7 @@ package com.example.dao;
 import com.example.bean.GoodsDetailPicture;
 import com.example.bean.GoodsDetailPictureExample;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -31,4 +32,6 @@ public interface GoodsDetailPictureMapper {
     int updateByPrimaryKeySelective(GoodsDetailPicture record);
 
     int updateByPrimaryKey(GoodsDetailPicture record);
+    
+    int updateGoods(Map paramMap);
 }

@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.bean.Manager;
 import com.example.service.ManagerService;
 
+/**
+ * 
+ * @author уетц
+ * @create 2019-07-10 10:53:15
+ */
 @Controller
 public class ManagerController {
 	

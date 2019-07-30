@@ -29,12 +29,44 @@
 		<div class="layui-form-item input-item" id="imgCode">
 			<label for="code">验证码</label>
 			<input type="text" placeholder="请输入验证码" autocomplete="off" id="code" class="layui-input">
-			<img src="images/code.jpg">
+			<img id="chptcha" onclick="getCaptcha()" src="images/code.jpg">
 		</div>
 		<div class="layui-form-item">
 			<button class="layui-btn layui-block" lay-filter="login" lay-submit>登录</button>
 		</div>
 	</form>
+	<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript">
+		var code = null;
+		$(document).ready(function(){
+			$.ajax({
+				type:"POST",
+				url:"http://47.93.190.178:8080/rainstorm/getCaptcha",
+				async:true,
+				data:{"width":116,"height":36},
+				dataType:"json",
+				success:function(res){
+					$("#chptcha").attr("src",res.data.picSrc);
+					code = res.data.code;
+				}
+			})
+		})
+		
+		function getCaptcha(){
+			$.ajax({
+				type:"POST",
+				url:"http://47.93.190.178:8080/rainstorm/getCaptcha",
+				async:true,
+				data:{"width":116,"height":36},
+				dataType:"json",
+				success:function(res){
+					$("#chptcha").attr("src",res.data.picSrc);
+					code = res.data.code;
+				}
+
+			})
+		}
+	</script>
 	<script type="text/javascript" src="layui/layui.js"></script>
 	<script type="text/javascript" src="page/login/login.js"></script>
 	<script type="text/javascript" src="js/cache.js"></script>
